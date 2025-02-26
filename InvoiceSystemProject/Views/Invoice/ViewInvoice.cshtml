@@ -1,0 +1,165 @@
+﻿@model InvoiceSystemProject.Models.tblinvoice_details
+@{
+    ViewBag.Title = "ViewInvoice";
+    Layout = "~/Views/Shared/_InvoiceLayout.cshtml";
+}
+<script>
+    function PrintInvoice()
+    {
+        var printContents = document.getElementById("dvprint").innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+
+        window.print();
+
+        document.body.innerHTML = originalContents;
+    }
+</script>
+
+<div class="row">
+    <input type="button" value="Print Invoice" onclick="PrintInvoice()" />
+</div>
+<div id="dvprint">
+
+    <div class="row">
+        <h4 style="text-align:center">!! Invoice !!</h4>
+    </div>
+    <div class="row">
+        <hr />
+    </div>
+
+    <div class="row">
+        <table>
+            <tr>
+                <td style="width:70%">
+                    <table>
+                        <tr>
+                            <td>Customer Name : <b> @Model.tblcustomer.customer_name</b></td>
+                        </tr>
+                        <tr>
+                            <td>Mobile Number : <b> @Model.tblcustomer.mobile_number</b></td>
+                        </tr>
+                        <tr>
+                            <td>City : <b> @Model.tblcustomer.city</b></td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="width:30%">
+                    <table>
+                        <tr>
+                            <td>#Invoice : <b> @Model.invoice_id</b></td>
+                        </tr>
+                        <tr>
+                            <td>Date : <b> @Model.invoice_date.Value.ToShortDateString()</b></td>
+                        </tr>
+
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="row">
+        <hr />
+    </div>
+
+    <div class="row">
+        <h4 style="text-align:center">Products Details</h4>
+    </div>
+
+    <div class="row">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Sr No</th>
+                    <th>Product Name</th>
+                    <th>Weight</th>
+                    <th>Rate</th>
+                    <th>Gst</th>
+                    <th>Quantity</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 1;
+                    float finaltotal = 0;
+                }
+
+                @foreach (var item in Model.tblinvoice_products)
+                {
+                    float total = (float)(item.tblproduct.rate + (item.tblproduct.rate * item.tblproduct.gst / 100)* item.quantity );
+                    finaltotal += total;
+                    <tr>
+                        <td>@i</td>
+                        <td>@item.tblproduct.product_name</td>
+                        <td>@item.tblproduct.weight</td>
+                        <td>@item.tblproduct.rate</td>
+                        <td>@item.tblproduct.gst</td>
+                        <td>@item.quantity</td>
+                        <td>@total</td>
+                    </tr>
+                    i++;
+                }
+            </tbody>
+
+            <tfoot>
+                <tr>
+
+                    <td colspan="6" style="text-align:right">Total =  </td>
+                    <td> <b>@finaltotal</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7"> Amount in words :  
+                        <b>@ViewBag.amount rupees only</b>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <hr />
+    <div class="row">
+        <h4 style="text-align:center">Payment History</h4>
+    </div>
+    @if (Model.tblinvoice_payments.Count > 0)
+    {
+        <div class="row">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Payment Date</th>
+                        <th>Payment Amount</th>
+                        <th>Payment Mode</th>
+                        <th>Payment Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        i = 1;
+                    }
+                    @foreach (var item in Model.tblinvoice_payments)
+                    {
+                        <tr>
+                            <td>@i</td>
+                            <td>@item.payment_date.Value.ToShortDateString()</td>
+                            <td>@item.payment_amount</td>
+                            <td>@item.payment_mode</td>
+                            <td>@item.payment_description</td>
+                        </tr>
+
+                        i++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <h4 style="color:red;text-align:center"> Payment Not Yet Received</h4>
+        </div>
+    }
+</div>

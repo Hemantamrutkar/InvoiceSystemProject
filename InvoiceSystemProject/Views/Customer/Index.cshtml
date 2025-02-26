@@ -1,0 +1,72 @@
+﻿@model InvoiceSystemProject.Models.tblcustomer
+@using InvoiceSystemProject.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_InvoiceLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        @if (ViewBag.msg != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show">
+                <strong>Success!</strong> @ViewBag.msg.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+        @using (Html.BeginForm())
+        {
+            <div class="card">
+                <div class="card-body">
+                    <h5>Customer Form</h5>
+                    <div class="mb-3">
+                        <label>Customer Name</label>
+                        @Html.TextBoxFor(e => e.customer_name, new { @class = "form-control" })
+                    </div>
+                    <div class="mb-3">
+                        <label>Mobile Number</label>
+                        @Html.TextBoxFor(e => e.mobile_number, new { @class = "form-control" })
+                    </div>
+                    <div class="mb-3">
+                        <label>City</label>
+                        @Html.TextBoxFor(e => e.city, new { @class = "form-control" })
+                    </div>
+                    <div class="mb-3">
+                        <input type="submit" value="Submit" class="btn btn-primary" />
+                        <input type="reset" value="Clear" class="btn btn-danger" />
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+    <div class="col-md-8">
+        @{ 
+            List<tblcustomer> lst = (List<tblcustomer>)ViewData["customers"];
+
+        }
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Customer Id</th>
+                    <th>Customer Name</th>
+                    <th>Mobile Number</th>
+                    <th>City</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(tblcustomer c in lst)
+            {
+                <tr>
+                    <td>@c.customer_id</td>
+                    <td>@c.customer_name</td>
+                    <td>@c.mobile_number</td>
+                    <td>@c.city</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+

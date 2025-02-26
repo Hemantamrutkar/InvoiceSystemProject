@@ -1,0 +1,101 @@
+﻿@model InvoiceSystemProject.Models.tblinvoice_payments
+    @using InvoiceSystemProject.Models
+@{
+    ViewBag.Title = "PayNow";
+    Layout = "~/Views/Shared/_InvoiceLayout.cshtml";
+}
+@{ 
+    InvoiceModel m = (InvoiceModel)ViewData["invoice"];
+}
+<div class="row">
+    <div class="col-md-8">
+        @using (Html.BeginForm())
+        {
+            @Html.HiddenFor(e => e.invoice_id)
+
+            if (ViewBag.msg != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show">
+                    <strong>Success!</strong> @ViewBag.msg.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            <div class="card">
+                <div class="card-header">
+                    <h5>Pay Now</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label>Customer Name</label>
+                                <input type="text" disabled value="@m.customer_name" class="form-control" />
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label>Invoice Date</label>
+                                <input type="text" disabled value="@m.invoice_date.ToShortDateString()" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label>Total Amount</label>
+                                <input type="text" disabled value="@m.total_amount" class="form-control" />
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label>Paid Amount</label>
+                                <input type="text" disabled value="@m.paid_amount" class="form-control" />
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label>Remaining Amount</label>
+                                <input type="text" disabled value="@m.remaining_amount" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label>Payment Date</label>
+                                @Html.TextBoxFor(e => e.payment_date, new { @class = "form-control", @type = "date" })
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label>Payment Amount</label>
+                                @Html.TextBoxFor(e => e.payment_amount, new { @class = "form-control" })
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label>Payment Mode</label>
+                                @Html.TextBoxFor(e => e.payment_mode, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label>Payment description</label>
+                        @Html.TextAreaFor(e => e.payment_description, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <input type="submit" value="Submit" class="btn btn-primary" />
+                    <a href="/Invoice/Index" class="btn btn-danger">Cancel</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

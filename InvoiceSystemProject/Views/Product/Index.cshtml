@@ -1,0 +1,91 @@
+﻿@model InvoiceSystemProject.Models.tblproduct
+@using InvoiceSystemProject.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_InvoiceLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        @if (ViewBag.msg != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show">
+                <strong>Success!</strong> @ViewBag.msg.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+        @using (Html.BeginForm())
+        {
+            <div class="card">
+                <div class="card-body">
+                    <h5>Product Form</h5>
+                    <div class="mb-3">
+                        <label>Product Name</label>
+                        @Html.TextBoxFor(e => e.product_name, new { @class = "form-control" })
+                    </div>
+                    <div class="mb-3">
+                        <label>Weight</label>
+                        @Html.DropDownListFor(e => e.weight, ViewBag.weights as SelectList,"select Weight", new { @class = "form-control" })
+                    </div>
+                    <div class="mb-3">
+                        <label>Rate</label>
+                        @Html.TextBoxFor(e => e.rate, new { @class = "form-control" })
+                    </div>
+                    <div class="mb-3">
+                        <label>GST</label>
+                        @Html.TextBoxFor(e => e.gst, new { @class = "form-control" })
+                    </div>
+                    <div class="mb-3">
+                        <label>Stock Quantity</label>
+                        @Html.TextBoxFor(e => e.stock_quantity, new { @class = "form-control" })
+                    </div>
+                    <div class="mb-3">
+                        <label>Received Date</label>
+                        @Html.TextBoxFor(e => e.received_on, new { @class = "form-control" ,@type="date"})
+                    </div>
+                    <div class="mb-3">
+                        <input type="submit" value="Submit" class="btn btn-primary" />
+                        <input type="reset" value="Clear" class="btn btn-danger" />
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+    <div class="col-md-8">
+        @{
+            List<tblproduct> lst = (List<tblproduct>)ViewData["products"];
+
+        }
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Product Id</th>
+                    <th>Product Name</th>
+                    <th>Weight</th>
+                    <th>Rate</th>
+                    <th>GST</th>
+                    <th>Stock Quantity</th>
+                    <th>Received on</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (tblproduct c in lst)
+                {
+                    <tr>
+                        <td>@c.product_id</td>
+                        <td>@c.product_name</td>
+                        <td>@c.weight</td>
+                        <td>@c.rate</td>
+                        <td>@c.gst</td>
+                        <td>@c.stock_quantity</td>
+                        <td>@c.received_on</td>
+                        @*<td>@c.received_on.Value.ToShortDateString()</td>*@
+                    </tr>
+                } 
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
